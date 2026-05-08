@@ -1,0 +1,67 @@
+# AGENTS.md
+
+이 문서는 이 저장소에서 작업하는 Codex 및 자동화 에이전트의 공통 작업 지침입니다. 프로젝트는 Unity 6.4 계열 3D 프로젝트이며, 현재 `ProjectSettings/ProjectVersion.txt` 기준 에디터 버전은 `6000.4.5f1`입니다.
+
+## 프로젝트 기준
+
+- Unity 에디터: `6000.4.5f1`
+- 렌더 파이프라인: Universal Render Pipeline `17.4.0`
+- 입력: Unity Input System `1.19.0`
+- 테스트: Unity Test Framework `1.6.0`
+- 주요 패키지: AI Navigation, Timeline, uGUI, Visual Scripting
+- 기본 작업 언어: 한국어
+
+## 작업 원칙
+
+- 변경 전에는 관련 파일과 Unity 프로젝트 구조를 먼저 확인한다.
+- 사용자가 명시하지 않은 대규모 리팩터링, 패키지 교체, 렌더 파이프라인 변경은 하지 않는다.
+- `Assets/`, `Packages/`, `ProjectSettings/`의 변경은 의도와 영향을 명확히 파악한 뒤 최소 범위로 진행한다.
+- `Library/`, `Temp/`, `Logs/`, `UserSettings/`, 생성된 `*.csproj`, `*.sln`, `*.slnx` 파일은 일반적으로 직접 수정하지 않는다.
+- Unity가 생성하는 `.meta` 파일은 반드시 보존한다. 에셋을 이동하거나 이름을 바꿀 때는 대응되는 `.meta`도 함께 유지되어야 한다.
+
+## 코드 스타일
+
+- C# 스크립트는 Unity 표준 관례를 따른다.
+- `MonoBehaviour` 생명주기 메서드는 의도가 분명할 때만 추가하고, 빈 `Update()` 같은 불필요한 메서드는 만들지 않는다.
+- 직렬화 필드는 기본적으로 `private` + `[SerializeField]`를 사용한다.
+- 런타임에서 자주 호출되는 경로에는 `FindObjectOfType`, `GameObject.Find`, 문자열 기반 `SendMessage` 사용을 피한다.
+- 입력 처리는 기존 프로젝트 설정을 우선 확인하고, 새 기능은 Input System 기반으로 작성한다.
+- 네임스페이스와 asmdef는 프로젝트에 기존 규칙이 생긴 뒤 그 규칙을 따른다. 현재 규칙이 없으면 불필요하게 새 asmdef를 만들지 않는다.
+
+## Unity 에셋과 씬
+
+- 프리팹, 씬, 머티리얼, 애니메이션, ScriptableObject 변경은 텍스트 diff만으로 의미를 판단하기 어려울 수 있으므로 변경 범위를 작게 유지한다.
+- 씬이나 프리팹을 수정해야 할 때는 어떤 오브젝트와 컴포넌트가 바뀌는지 최종 응답에 적는다.
+- URP 프로젝트이므로 새 셰이더, 머티리얼, 렌더 기능은 URP 호환성을 우선한다.
+- 3D 물리 동작은 `Rigidbody`, `Collider`, `Physics` 설정을 기준으로 구현하고, 2D 물리 API와 혼용하지 않는다.
+
+## 테스트와 검증
+
+- 가능한 경우 Unity Test Runner의 EditMode 또는 PlayMode 테스트를 추가한다.
+- Unity 배치 모드 테스트 예시:
+
+```powershell
+Unity.exe -batchmode -projectPath . -runTests -testPlatform EditMode -testResults TestResults/EditMode.xml -quit
+```
+
+- 에디터 실행이나 테스트 실행이 로컬 환경에서 불가능하면, 수행하지 못한 이유와 대신 확인한 내용을 최종 응답에 남긴다.
+- 컴파일 안정성이 중요한 변경은 관련 C# 파일의 문법, Unity API 사용 가능성, 직렬화 필드 이름 변경 영향을 확인한다.
+
+## 패키지와 설정
+
+- `Packages/manifest.json` 변경은 필요한 패키지 추가, 제거, 버전 조정이 명확할 때만 수행한다.
+- Unity 버전 또는 패키지 버전을 올리는 작업은 사용자가 명시적으로 요청한 경우에만 진행한다.
+- `ProjectSettings/` 변경은 빌드 타깃, 입력, 그래픽스, 물리, 품질 설정 등 프로젝트 전체 동작에 영향을 줄 수 있으므로 특히 보수적으로 다룬다.
+
+## Git 및 파일 관리
+
+- 사용자가 만들었을 수 있는 기존 변경 사항은 되돌리지 않는다.
+- 삭제, 이동, 대량 포맷팅은 요청 범위에 꼭 필요할 때만 진행한다.
+- 새로 생성한 파일은 Unity가 인식할 수 있는 위치와 이름을 사용한다.
+- `.gitignore`는 Unity 생성물(`Library/`, `Temp/`, `Logs/`, `Obj/`, 빌드 산출물 등)을 계속 제외해야 한다.
+
+## 응답 방식
+
+- 최종 응답은 한국어로 작성한다.
+- 변경한 파일, 핵심 변경 내용, 실행한 검증을 간단히 정리한다.
+- 테스트나 빌드를 실행하지 못했다면 그 사실을 명확히 말한다.
