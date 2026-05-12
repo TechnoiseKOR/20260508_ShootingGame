@@ -25,4 +25,24 @@ public class Enemy : MonoBehaviour
         // 2. 이동하고 싶다. P = P0 + vt
         transform.position += dir * speed * Time.deltaTime;
     }
+
+    // 충돌 시작
+    private void OnCollisionEnter(Collision collision)
+    {
+       // 충돌 시작 
+       // 너 죽고
+       Destroy(collision.gameObject);
+       // 나 죽자
+       Destroy(gameObject);
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        // 충돌 중
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        // 충돌 끝
+    }
 }
