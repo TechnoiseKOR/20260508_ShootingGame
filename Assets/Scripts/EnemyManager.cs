@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    // 최소 시간
+    float minTime = 1.0f;
+    // 최대 시간
+    float maxTime = 5.0f;
     // 현재 시간
     float currentTime;
     // 일정 시간
@@ -12,7 +16,8 @@ public class EnemyManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // 태어날 때 적의 생성 시간을 설정하고
+        createTime = UnityEngine.Random.Range(minTime, maxTime);
     }
 
     // Update is called once per frame
@@ -30,6 +35,8 @@ public class EnemyManager : MonoBehaviour
             enemy.transform.position = transform.position;
             // 현재 시간을 0으로 초기화
             currentTime = 0.0f;
+            // 적을 생성한 후 적의 생성 시간을 다시 설정하고 싶다.
+            createTime = UnityEngine.Random.Range(minTime, maxTime);
         }
     }
 }
