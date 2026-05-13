@@ -5,6 +5,11 @@ using UnityEngine;
 // 순서 : 1. 방향 구하기
 //       2. 이동하기
 
+// 목표 : 적이 다른 물체와 충돌했을 때 폭발 효과를 발생시키고 싶다.
+// 순서 : 1. 적이 다른 물체와 충돌했으니까.
+//       2. 폭발 효과 공장에서 폭발 효과를 하나 만들어야 한다.
+//       3. 폭발 효과를 발생(위치)시키고 싶다.
+// 필요 속성 : 폭발 공장 주소(외부에서 값을 넣어준다)
 
 public class Enemy : MonoBehaviour
 {
@@ -13,6 +18,9 @@ public class Enemy : MonoBehaviour
 
     // 방향을 전역 변수로 만들어 Start와 Update에서 사용
     Vector3 dir;
+
+    // 폭발 공장 주소(외부에서 값을 넣어준다)
+    public GameObject explosionFactory;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -53,9 +61,16 @@ public class Enemy : MonoBehaviour
     }
 
     // 충돌 시작
+    // 1. 적이 다른 물체와 충돌했으니까.
     private void OnCollisionEnter(Collision collision)
     {
        // 충돌 시작 
+       // 2. 폭발 효과 공장에서 폭발 효과를 하나 만들어야 한다.
+       GameObject explosion = Instantiate(explosionFactory);
+
+       // 3. 폭발 효과를 발생(위치)시키고 싶다.
+       explosion.transform.position = transform.position;
+
        // 너 죽고
        Destroy(collision.gameObject);
        // 나 죽자
