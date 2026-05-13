@@ -108,3 +108,5 @@ InitTestScene*.unity*
 .vscode/
 patch.diff
 .vsconfig
+Assets/_Recovery/
+Assets/_Recovery.meta
