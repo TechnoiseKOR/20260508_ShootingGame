@@ -84,6 +84,8 @@ public class Enemy : MonoBehaviour
 
             // 3. 최고 점수 UI에 표시
             sm.bestScoreUI.text = "최고 점수 : " + sm.bestScore;
+            // 목표 : 최고 점수를 저장하고 싶다.
+            PlayerPrefs.SetInt("Best Score", sm.bestScore);
         }
 
        // 충돌 시작 
