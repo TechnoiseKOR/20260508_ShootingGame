@@ -1105,6 +1105,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
   currentScoreUI: {fileID: 543236729}
   currentScore: 0
+  bestScoreUI: {fileID: 912956333}
+  bestScore: 0
 --- !u!1 &900791938
 GameObject:
   m_ObjectHideFlags: 0

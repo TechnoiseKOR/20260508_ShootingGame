@@ -9,6 +9,11 @@ public class ScoreManager : MonoBehaviour
     // 현재 점수
     public int currentScore;
 
+    // 최고 점수 UI
+    public Text bestScoreUI;
+    // 최고 점수
+    public int bestScore;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
